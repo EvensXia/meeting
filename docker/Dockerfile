@@ -7,8 +7,7 @@ ENV TZ=Asia/Shanghai \
 
 RUN apt update && apt upgrade -y && apt install -y \
     python3-venv python-is-python3 python3-setuptools python3-pip \
-    python3-dev default-libmysqlclient-dev build-essential pkg-config \
-    texlive-full inkscape \
+    python3-dev default-libmysqlclient-dev build-essential pkg-config  \
     && ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone \
     && dpkg-reconfigure --frontend noninteractive tzdata \
