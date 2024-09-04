@@ -25,11 +25,12 @@ ENV WECHAT_APPSECRET=${WECHAT_APPSECRET}
 
 COPY server/requirements.txt /tmp/requirements.txt
 # 安装Python库到虚拟环境
-RUN python3 -m pip install --upgrade pip \
-    && pip install -r /tmp/requirements.txt
+RUN $VIRTUAL_ENV/bin/python -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+    && $VIRTUAL_ENV/bin/python -m pip install --upgrade pip \
+    && $VIRTUAL_ENV/bin/python -m pip install -r /tmp/requirements.txt
 
 WORKDIR /app/mettings
 COPY . .
 WORKDIR /app/mettings/server
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["$VIRTUAL_ENV/bin/python", "manage.py", "runserver", "0.0.0.0:8000"]
