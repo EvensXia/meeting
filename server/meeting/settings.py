@@ -1,5 +1,8 @@
 # encoding: utf-8
 from __future__ import absolute_import, unicode_literals
+
+from pathlib import Path
+
 """
 Django settings for meeting project.
 
@@ -13,18 +16,18 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 import os
+
 from django.conf import global_settings
 from kombu import Exchange, Queue
 from rest_framework import ISO_8601
 
 from . import local_settings as ls
-from .local_settings import *  # NOQA
-from .constance import CONSTANCE_CONFIG  # NOQA
 from .celery_annotations import celery_annotations_dict
-
+from .constance import CONSTANCE_CONFIG  # NOQA
+from .local_settings import *  # NOQA
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -83,7 +86,7 @@ SESSION_REDIS = {
 
 CACHES = {
     'default': {
-        'BACKEND': 'redis_cache.RedisCache',
+        'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': [
             '%s:%s' % (ls.REDIS_HOST, ls.REDIS_PORT),
         ],
@@ -126,24 +129,29 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': ls.MYSQL_DBNAME,
+#         'USER': ls.MYSQL_USERNAME,
+#         'PASSWORD': ls.MYSQL_PASSWORD,
+#         'HOST': ls.MYSQL_HOST,
+#         'PORT': ls.MYSQL_PORT,
+#         'TEST_CHARSET': "utf8mb4",
+#         'TEST_COLLATION': "utf8mb4_unicode_ci",
+#         'STORAGE_ENGINE': 'INNODB',
+#         'OPTIONS': {
+#             'charset': 'utf8mb4',
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': ls.MYSQL_DBNAME,
-        'USER': ls.MYSQL_USERNAME,
-        'PASSWORD': ls.MYSQL_PASSWORD,
-        'HOST': ls.MYSQL_HOST,
-        'PORT': ls.MYSQL_PORT,
-        'TEST_CHARSET': "utf8mb4",
-        'TEST_COLLATION': "utf8mb4_unicode_ci",
-        'STORAGE_ENGINE': 'INNODB',
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # 数据库文件的路径
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 

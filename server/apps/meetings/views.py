@@ -137,7 +137,7 @@ class RoomEdit(RoomBase):
         param_fields = (
             ('name', fields.CharField(label='名称', max_length=64)),
             ('description', fields.CharField(label='描述', max_length=255, allow_blank=True, default="")),
-            ('create_user_manager', fields.NullBooleanField(label='创建人管理权限', default=None)),
+            ('create_user_manager', fields.BooleanField(label='创建人管理权限', default=None, allow_null=True)),
         )
 
 
